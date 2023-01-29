@@ -8,7 +8,10 @@ import com.levi.carmanagement.entity.Expense;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Stateless
 public class QueryService {
@@ -83,12 +86,12 @@ public class QueryService {
                 .getResultList();
     }
 
-    public Collection<Object[]> sumExpensesForCar(Long carId) {
+    public Map<String, BigDecimal> sumExpensesForCar(Long carId) {
         Collection<Object[]> queryResult = entityManager.createNamedQuery(Expense.SUM_EXPENSES_FOR_CAR, Object[].class)
                 .setParameter("carId", carId)
                 .setParameter("loggedInUser", applicationState.getUsername())
                 .getResultList();
-        // TODO: Convert queryResult to Map
-        return queryResult;
+        return queryResult.stream().collect(
+                Collectors.toMap(o -> String.valueOf(o[1]), o -> BigDecimal.valueOf(Double.parseDouble((String.valueOf(o[0]))))));
     }
 }

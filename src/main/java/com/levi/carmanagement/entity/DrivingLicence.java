@@ -2,9 +2,7 @@ package com.levi.carmanagement.entity;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,7 +30,7 @@ public class DrivingLicence extends AbstractEntity {
     public DrivingLicence() {
     }
 
-    public DrivingLicence(Long id, LocalDateTime created, LocalDateTime lastUpdated, String licenceNumber, LocalDate validFrom, LocalDate validTo, ApplicationUser applicationUser) {
+    public DrivingLicence(Long id, LocalDateTime created, LocalDateTime lastUpdated, String licenceNumber, LocalDate validFrom, LocalDate validTo, byte[] picture, ApplicationUser applicationUser) {
         super(id, created, lastUpdated);
         this.licenceNumber = licenceNumber;
         this.validFrom = validFrom;
@@ -71,4 +69,5 @@ public class DrivingLicence extends AbstractEntity {
     public void setApplicationUser(ApplicationUser applicationUser) {
         this.applicationUser = applicationUser;
     }
+
 }

@@ -53,6 +53,21 @@ public class UserResource {
     }
 
     @POST
+    @Secure
+    @Path("licence/picture")
+    public Response addPictureOfDrivingLicence(@RequestBody byte[] picture) {
+        persistenceService.addPictureToDrivingLicence(picture);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Secure
+    @Path("licence/picture")
+    public Response getPictureOfDrivingLicence() {
+        return Response.ok(queryService.getPictureOfDrivingLicence()).status(Response.Status.FOUND).build();
+    }
+
+    @POST
     @Path("register")
     public Response saveUser(@RequestBody ApplicationUser user) {
         persistenceService.saveUser(user);

@@ -59,8 +59,6 @@ public class PersistenceService {
         } else {
             entityManager.merge(drivingLicence);
         }
-
-
     }
 
     public void saveExpense(Long carId, Expense expense) {
