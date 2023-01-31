@@ -28,6 +28,13 @@ public class ExpenseResource {
 
     @GET
     @Secure
+    @Path("{id}")
+    public Response getExpenseById(@PathParam("id") Long expenseId) {
+        return Response.ok(queryService.getExpenseById(expenseId)).status(Response.Status.FOUND).build();
+    }
+
+    @GET
+    @Secure
     @Path("all")
     public Response getAllExpense(@QueryParam("carId") Long carId) {
         return Response.ok(queryService.getAllExpense(carId)).status(Response.Status.FOUND).build();
@@ -38,7 +45,7 @@ public class ExpenseResource {
     @Path("add")
     public Response addExpense(@QueryParam("carId") Long carId, @RequestBody Expense expense) {
         persistenceService.saveExpense(carId, expense);
-        URI uri = uriInfo.getAbsolutePathBuilder().replacePath("car-management/api/v1/user/cars").path(carId.toString()).build();
+        URI uri = uriInfo.getBaseUriBuilder().path("user/cars/expenses").path(expense.getId().toString()).build();
         return Response.created(uri).status(Response.Status.CREATED).build();
     }
 

@@ -98,6 +98,17 @@ public class QueryService {
 
     // Expense related queries
 
+    public Expense getExpenseById(Long expenseId) {
+        Expense expense = entityManager.createNamedQuery(Expense.GET_EXPENSE_BY_ID, Expense.class)
+                .setParameter("expenseId", expenseId)
+                .getSingleResult();
+        if(expense.getCar().getOwner().getUsername().equals(applicationState.getUsername())
+                || expense.getCar().getDrivers().contains(getUserByUsername(applicationState.getUsername()))) {
+            return expense;
+        }
+        throw new SecurityException("No access granted!");
+    }
+
     public Collection<Expense> getAllExpense(Long carId) {
         return entityManager.createNamedQuery(Expense.GET_ALL_EXPENSE_FOR_CAR, Expense.class)
                 .setParameter("carId", carId)

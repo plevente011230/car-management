@@ -7,12 +7,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@NamedQuery(name = Expense.GET_EXPENSE_BY_ID, query = "select e from Expense e where e.id = :expenseId")
 @NamedQuery(name = Expense.GET_ALL_EXPENSE_FOR_CAR,
         query = "select e from Expense e where e.car.id = :carId and e.car.owner.username = :loggedInUser")
 @NamedQuery(name = Expense.SUM_EXPENSES_FOR_CAR,
         query = "select sum(e.amount), e.currency from Expense e where e.car.id = :carId and e.car.owner.username = :loggedInUser group by e.currency")
 public class Expense extends AbstractEntity {
 
+    public static final String GET_EXPENSE_BY_ID = "Expense.findById";
     public static final String GET_ALL_EXPENSE_FOR_CAR = "Expense.getAll";
     public static final String SUM_EXPENSES_FOR_CAR = "Expense.sum";
 

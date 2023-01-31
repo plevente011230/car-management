@@ -36,6 +36,7 @@ public class PersistenceService {
     public void saveCar(Car car) {
         ApplicationUser user = queryService.getUserByUsername(applicationState.getUsername());
         user.addOwnedCar(car);
+        entityManager.persist(car);
         entityManager.merge(user);
     }
 
@@ -71,6 +72,7 @@ public class PersistenceService {
     public void saveExpense(Long carId, Expense expense) {
         Car car = queryService.findCarById(carId);
         car.addExpense(expense);
+        entityManager.persist(expense);
         entityManager.merge(car);
     }
 

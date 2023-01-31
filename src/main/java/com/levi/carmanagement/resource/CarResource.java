@@ -12,7 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.Collection;
 
 @Path("user/cars")
 public class CarResource {
@@ -30,16 +29,14 @@ public class CarResource {
     @Secure
     @Path("owned")
     public Response getOwnedCars() {
-        Collection<Car> cars = queryService.getOwnedCars();
-        return Response.ok(cars).build();
+        return Response.ok(queryService.getOwnedCars()).build();
     }
 
     @GET
     @Secure
     @Path("driven")
     public Response getDrivenCars() {
-        Collection<Car> cars = queryService.getDrivenCars();
-        return Response.ok(cars).build();
+        return Response.ok(queryService.getDrivenCars()).build();
     }
 
     @GET
@@ -60,7 +57,7 @@ public class CarResource {
     @Path("add")
     public Response saveCar(@RequestBody Car car) {
         persistenceService.saveCar(car);
-        URI uri = uriInfo.getAbsolutePathBuilder().replacePath("car-management/api/v1/user/cars/all").build();
+        URI uri = uriInfo.getBaseUriBuilder().path("user/cars").path(car.getId().toString()).build();
         return Response.created(uri).status(Response.Status.CREATED).build();
     }
 
