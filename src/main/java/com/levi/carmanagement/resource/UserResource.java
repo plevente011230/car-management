@@ -37,21 +37,6 @@ public class UserResource {
     @Context
     UriInfo uriInfo;
 
-    @GET
-    @Path("licence")
-    public Response getDrivingLicence() {
-        return Response.ok(queryService.getDrivingLicence()).status(Response.Status.FOUND).build();
-    }
-
-
-    @POST
-    @Secure
-    @Path("licence")
-    public Response addDrivingLicence(@RequestBody DrivingLicence drivingLicence) {
-        persistenceService.addDrivingLicence(drivingLicence);
-        return Response.created(uriInfo.getAbsolutePath()).status(Response.Status.CREATED).build();
-    }
-
     @POST
     @Path("register")
     public Response saveUser(@RequestBody ApplicationUser user) {

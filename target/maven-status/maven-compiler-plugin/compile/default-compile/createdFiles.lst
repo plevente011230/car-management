@@ -19,5 +19,6 @@ com/levi/carmanagement/service/SecurityService.class
 com/levi/carmanagement/entity/ApplicationUser.class
 com/levi/carmanagement/resource/UserResource.class
 com/levi/carmanagement/entity/Car.class
+com/levi/carmanagement/resource/DrivingLicenseResource.class
 com/levi/carmanagement/entity/ExpenseCategory.class
 com/levi/carmanagement/entity/DrivingLicence.class

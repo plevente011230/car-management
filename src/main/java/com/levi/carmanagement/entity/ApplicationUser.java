@@ -82,6 +82,10 @@ public class ApplicationUser extends AbstractEntity {
         this.drivingLicence = drivingLicence;
     }
 
+    public void removeDrivingLicence() {
+        this.drivingLicence = null;
+    }
+
     public void setOwnedCars(Collection<Car> ownedCars) {
         this.ownedCars = ownedCars;
     }

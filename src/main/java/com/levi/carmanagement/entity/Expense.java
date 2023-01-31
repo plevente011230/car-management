@@ -12,11 +12,14 @@ import java.time.LocalDateTime;
         query = "select e from Expense e where e.car.id = :carId and e.car.owner.username = :loggedInUser")
 @NamedQuery(name = Expense.SUM_EXPENSES_FOR_CAR,
         query = "select sum(e.amount), e.currency from Expense e where e.car.id = :carId and e.car.owner.username = :loggedInUser group by e.currency")
+@NamedQuery(name = Expense.SUM_EXPENSES_BY_CATEGORY,
+        query = "select sum(e.amount), e.currency, e.expenseCategory from Expense e where e.car.id = :carId group by e.expenseCategory, e.currency")
 public class Expense extends AbstractEntity {
 
     public static final String GET_EXPENSE_BY_ID = "Expense.findById";
     public static final String GET_ALL_EXPENSE_FOR_CAR = "Expense.getAll";
     public static final String SUM_EXPENSES_FOR_CAR = "Expense.sum";
+    public static final String SUM_EXPENSES_BY_CATEGORY = "Expense.sumByCategory";
 
     @PositiveOrZero
     private BigDecimal amount;

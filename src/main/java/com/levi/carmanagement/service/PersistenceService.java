@@ -59,7 +59,7 @@ public class PersistenceService {
         credMap = null;
     }
 
-    public void addDrivingLicence(DrivingLicence drivingLicence) {
+    public void saveDrivingLicence(DrivingLicence drivingLicence) {
         ApplicationUser user = queryService.getUserByUsername(applicationState.getUsername());
         if(drivingLicence.getId() == null) {
             user.setDrivingLicence(drivingLicence);
@@ -67,6 +67,13 @@ public class PersistenceService {
         } else {
             entityManager.merge(drivingLicence);
         }
+    }
+
+    public void deleteDrivingLicence() {
+        ApplicationUser user = queryService.getUserByUsername(applicationState.getUsername());
+        DrivingLicence drivingLicence = user.getDrivingLicence();
+        user.removeDrivingLicence();
+        entityManager.remove(drivingLicence);
     }
 
     public void saveExpense(Long carId, Expense expense) {
