@@ -28,9 +28,17 @@ public class CarResource {
 
     @GET
     @Secure
-    @Path("all")
-    public Response getAllCars() {
-        Collection<Car> cars = queryService.getAllCarsForUser();
+    @Path("owned")
+    public Response getOwnedCars() {
+        Collection<Car> cars = queryService.getOwnedCars();
+        return Response.ok(cars).build();
+    }
+
+    @GET
+    @Secure
+    @Path("driven")
+    public Response getDrivenCars() {
+        Collection<Car> cars = queryService.getDrivenCars();
         return Response.ok(cars).build();
     }
 

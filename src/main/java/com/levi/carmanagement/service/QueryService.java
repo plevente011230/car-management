@@ -48,9 +48,15 @@ public class QueryService {
                 .getSingleResult();
     }
 
-    public Collection<Car> getAllCarsForUser() {
-        return entityManager.createNamedQuery(Car.FIND_CARS_FOR_USER, Car.class)
+    public Collection<Car> getOwnedCars() {
+        return entityManager.createNamedQuery(Car.GET_OWNED_CARS, Car.class)
                 .setParameter("filter", applicationState.getUsername())
+                .getResultList();
+    }
+
+    public Collection<Car> getDrivenCars() {
+        return entityManager.createNamedQuery(Car.GET_DRIVEN_CARS, Car.class)
+                .setParameter("username", applicationState.getUsername())
                 .getResultList();
     }
 
