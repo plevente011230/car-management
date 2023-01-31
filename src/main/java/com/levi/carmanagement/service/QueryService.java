@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -57,6 +56,12 @@ public class QueryService {
 
     //User related queries
 
+    public Collection<String> filterUserByUsername(String username) {
+        return entityManager.createNamedQuery(ApplicationUser.FILTER_USER_BY_USERNAME, String.class)
+                .setParameter("username", username)
+                .getResultList();
+    }
+
     public ApplicationUser getUserDetails() {
         return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_USERNAME, ApplicationUser.class)
                 .setParameter("filter", applicationState.getUsername())
@@ -76,8 +81,8 @@ public class QueryService {
     }
 
     public boolean authenticateUser(String username, String plainTextPassword) {
-        ApplicationUser user = entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
-                .setParameter("username", username)
+        ApplicationUser user = entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_USERNAME, ApplicationUser.class)
+                .setParameter("filter", username)
                 .getSingleResult();
         if(user != null) {
             return securityService.passwordsMatch(user.getPassword(), user.getSalt(), plainTextPassword);

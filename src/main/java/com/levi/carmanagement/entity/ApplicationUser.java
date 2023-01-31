@@ -7,12 +7,14 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
-@NamedQuery(name = ApplicationUser.FIND_USER_BY_USERNAME, query = "select u from ApplicationUser u where u.username = :filter")
-@NamedQuery(name = ApplicationUser.FIND_USER_BY_CREDENTIALS, query = "select u from ApplicationUser u where u.username = :username")
+@NamedQuery(name = ApplicationUser.FIND_USER_BY_USERNAME,
+        query = "select u from ApplicationUser u where u.username = :filter")
+@NamedQuery(name = ApplicationUser.FILTER_USER_BY_USERNAME,
+        query = "select u.username from ApplicationUser u where u.username like :username")
 public class ApplicationUser extends AbstractEntity {
 
     public static final String FIND_USER_BY_USERNAME = "User.findUserByUsername";
-    public static final String FIND_USER_BY_CREDENTIALS = "User.findByCredentials";
+    public static final String FILTER_USER_BY_USERNAME = "User.filterByUsername";
 
     @Column(unique = true)
     @Size(min = 3, max = 25, message = "Username must be between 3 and 25 characters long!")

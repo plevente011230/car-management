@@ -11,8 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -20,8 +18,6 @@ import java.net.URI;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Path("user")
 public class UserResource {
