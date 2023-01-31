@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -27,8 +28,15 @@ public class QueryService {
 
     // Car related queries
 
+    public Collection<String> getDrivers(Long carId) {
+        Car car = findCarById(carId);
+        return entityManager.createNamedQuery(Car.GET_CAR_DRIVERS, String.class)
+                .setParameter("carId", carId)
+                .getResultList();
+    }
+
     public Collection<Car> findCarsByPlateNumber(String plateNumber) {
-        return entityManager.createNamedQuery(Car.FIND_CARS_BY_PLATE_NUMBER, Car.class)
+        return entityManager.createNamedQuery(Car.FILTER_CARS_BY_PLATE_NUMBER, Car.class)
                 .setParameter("filter", '%' + plateNumber + '%')
                 .setParameter("loggedInUser", applicationState.getUsername())
                 .getResultList();
@@ -50,7 +58,7 @@ public class QueryService {
     //User related queries
 
     public ApplicationUser getUserDetails() {
-        return entityManager.createNamedQuery(ApplicationUser.FIND_LOGGED_IN_USER, ApplicationUser.class)
+        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_USERNAME, ApplicationUser.class)
                 .setParameter("filter", applicationState.getUsername())
                 .getSingleResult();
     }
@@ -62,8 +70,8 @@ public class QueryService {
     }
 
     public ApplicationUser getUserByUsername(String username) {
-        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
-                .setParameter("username", username)
+        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_USERNAME, ApplicationUser.class)
+                .setParameter("filter", username)
                 .getSingleResult();
     }
 

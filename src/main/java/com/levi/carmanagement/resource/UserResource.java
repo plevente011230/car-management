@@ -11,6 +11,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -18,6 +20,8 @@ import java.net.URI;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("user")
 public class UserResource {
@@ -50,21 +54,6 @@ public class UserResource {
     public Response addDrivingLicence(@RequestBody DrivingLicence drivingLicence) {
         persistenceService.addDrivingLicence(drivingLicence);
         return Response.created(uriInfo.getAbsolutePath()).status(Response.Status.CREATED).build();
-    }
-
-    @POST
-    @Secure
-    @Path("licence/picture")
-    public Response addPictureOfDrivingLicence(@RequestBody byte[] picture) {
-        persistenceService.addPictureToDrivingLicence(picture);
-        return Response.ok().build();
-    }
-
-    @GET
-    @Secure
-    @Path("licence/picture")
-    public Response getPictureOfDrivingLicence() {
-        return Response.ok(queryService.getPictureOfDrivingLicence()).status(Response.Status.FOUND).build();
     }
 
     @POST
@@ -106,6 +95,7 @@ public class UserResource {
             throw new SecurityException("Email or password incorrect");
         }
         applicationState.setUsername(username);
+//        logger.log(Level.INFO, "User logged in: {}", username);
         String token = getToken(username);
         return Response.ok("Logged in successfully").header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
     }

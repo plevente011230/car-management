@@ -39,6 +39,13 @@ public class PersistenceService {
         entityManager.merge(user);
     }
 
+    public void addDriverToCar(String driverUsername, Long carId) {
+        ApplicationUser driver = queryService.getUserByUsername(driverUsername);
+        Car car = queryService.findCarById(carId);
+        car.addDriver(driver);
+        entityManager.merge(car);
+    }
+
     public void saveUser(ApplicationUser user) {
         Map<String, String> credMap =  securityService.hashPassword(user.getPassword());
         user.setPassword(credMap.get("hashedPassword"));

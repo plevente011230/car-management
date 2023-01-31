@@ -11,15 +11,19 @@ import java.util.HashSet;
 @Entity
 @NamedQuery(name = Car.GET_ALL_CARS, query = "select c from Car c")
 @NamedQuery(name = Car.FIND_CAR_BY_ID, query = "select c from Car c where c.id = :filter and c.owner.username = :loggedInUser")
-@NamedQuery(name = Car.FIND_CARS_BY_PLATE_NUMBER,
+@NamedQuery(name = Car.FILTER_CARS_BY_PLATE_NUMBER,
         query = "select c from Car c where c.plateNumber like :filter and c.owner.username = :loggedInUser")
 @NamedQuery(name = Car.FIND_CARS_FOR_USER, query = "select c from Car c where c.owner.username = :filter")
+@NamedQuery(name = Car.GET_CAR_DRIVERS,
+        query = "select u.username from ApplicationUser u join Car c where c.id= :carId and u member of c.drivers")
 public class Car extends AbstractEntity {
 
     public static final String GET_ALL_CARS = "Cars.findAll";
     public static final String FIND_CAR_BY_ID = "Cars.findById";
-    public static final String FIND_CARS_BY_PLATE_NUMBER = "Cars.findByPlateNumber";
+    public static final String FILTER_CARS_BY_PLATE_NUMBER = "Cars.filterByPlateNumber";
     public static final String FIND_CARS_FOR_USER = "Cars.findAllForUser";
+
+    public static final String GET_CAR_DRIVERS = "Cars.getDrivers";
 
     @NotBlank
     private String brand;
@@ -38,7 +42,7 @@ public class Car extends AbstractEntity {
 
     @ManyToMany
     @JsonbTransient
-    private Collection<ApplicationUser> drivers = new HashSet<>();
+    private final Collection<ApplicationUser> drivers = new HashSet<>();
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Expense> expenses = new ArrayList<>();
@@ -82,6 +86,19 @@ public class Car extends AbstractEntity {
 
     public void setOwner(ApplicationUser owner) {
         this.owner = owner;
+    }
+
+    public Collection<ApplicationUser> getDrivers() {
+        return drivers;
+    }
+
+    public void addDriver(ApplicationUser driver) {
+        driver.addDrivenCar(this);
+        this.drivers.add(driver);
+    }
+
+    public void setExpenses(Collection<Expense> expenses) {
+        this.expenses = expenses;
     }
 
     public Car() {

@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -36,6 +37,13 @@ public class CarResource {
 
     @GET
     @Secure
+    @Path("{carId}/drivers")
+    public Response getDrivers(@PathParam("carId") Long carId) {
+        return Response.ok(queryService.getDrivers(carId)).build();
+    }
+
+    @GET
+    @Secure
     public Response findCarsByPlateNumber(@QueryParam("plateNumber") String plateNumber) {
         return Response.ok(queryService.findCarsByPlateNumber(plateNumber)).status(Response.Status.FOUND).build();
     }
@@ -49,4 +57,11 @@ public class CarResource {
         return Response.created(uri).status(Response.Status.CREATED).build();
     }
 
+    @POST
+    @Secure
+    @Path("{carId}/add-driver")
+    public Response addDriver(@PathParam("carId") Long carId, @QueryParam("username") String username) {
+        persistenceService.addDriverToCar(username, carId);
+        return Response.ok().status(Response.Status.ACCEPTED).build();
+    }
 }

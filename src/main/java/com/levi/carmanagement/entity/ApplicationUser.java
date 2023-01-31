@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
-@NamedQuery(name = ApplicationUser.FIND_LOGGED_IN_USER, query = "select u from ApplicationUser u where u.username = :filter")
+@NamedQuery(name = ApplicationUser.FIND_USER_BY_USERNAME, query = "select u from ApplicationUser u where u.username = :filter")
 @NamedQuery(name = ApplicationUser.FIND_USER_BY_CREDENTIALS, query = "select u from ApplicationUser u where u.username = :username")
 public class ApplicationUser extends AbstractEntity {
 
-    public static final String FIND_LOGGED_IN_USER = "User.findLoggedInUser";
+    public static final String FIND_USER_BY_USERNAME = "User.findUserByUsername";
     public static final String FIND_USER_BY_CREDENTIALS = "User.findByCredentials";
 
     @Column(unique = true)
@@ -78,6 +78,18 @@ public class ApplicationUser extends AbstractEntity {
     public void setDrivingLicence(DrivingLicence drivingLicence) {
         drivingLicence.setApplicationUser(this);
         this.drivingLicence = drivingLicence;
+    }
+
+    public void setOwnedCars(Collection<Car> ownedCars) {
+        this.ownedCars = ownedCars;
+    }
+
+    public Collection<Car> getDrivenCars() {
+        return drivenCars;
+    }
+
+    public void addDrivenCar(Car car) {
+        this.drivenCars.add(car);
     }
 
     public ApplicationUser() {
