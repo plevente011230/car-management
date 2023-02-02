@@ -1,4 +1,6 @@
+com/levi/carmanagement/entity/InsuranceProvider.class
 com/levi/carmanagement/resource/CarResource.class
+com/levi/carmanagement/entity/Insurance.class
 com/levi/carmanagement/entity/AbstractEntity.class
 com/levi/carmanagement/resource/ExpenseResource.class
 com/levi/carmanagement/entity/Expense.class

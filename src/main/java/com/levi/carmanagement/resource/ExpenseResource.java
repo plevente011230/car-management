@@ -2,6 +2,7 @@ package com.levi.carmanagement.resource;
 
 import com.levi.carmanagement.config.Secure;
 import com.levi.carmanagement.entity.Expense;
+import com.levi.carmanagement.service.ApplicationState;
 import com.levi.carmanagement.service.PersistenceService;
 import com.levi.carmanagement.service.QueryService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
@@ -18,6 +19,9 @@ import java.net.URI;
 public class ExpenseResource {
 
     @Inject
+    ApplicationState applicationState;
+
+    @Inject
     QueryService queryService;
 
     @Inject
@@ -30,7 +34,12 @@ public class ExpenseResource {
     @Secure
     @Path("{id}")
     public Response getExpenseById(@PathParam("id") Long expenseId) {
-        return Response.ok(queryService.getExpenseById(expenseId)).status(Response.Status.FOUND).build();
+        Expense expense = queryService.getExpenseById(expenseId);
+        if(expense.getCar().getOwner().getUsername().equals(applicationState.getUsername())
+                || expense.getCar().getDrivers().contains(queryService.getUserByUsername(applicationState.getUsername()))) {
+            return Response.ok(queryService.getExpenseById(expenseId)).status(Response.Status.FOUND).build();
+        }
+        return Response.ok().status(Response.Status.METHOD_NOT_ALLOWED).build();
     }
 
     @GET
