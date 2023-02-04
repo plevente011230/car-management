@@ -1,9 +1,6 @@
 package com.levi.carmanagement.service;
 
-import com.levi.carmanagement.entity.ApplicationUser;
-import com.levi.carmanagement.entity.Car;
-import com.levi.carmanagement.entity.DrivingLicence;
-import com.levi.carmanagement.entity.Expense;
+import com.levi.carmanagement.entity.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -124,5 +121,25 @@ public class QueryService {
                 .getResultList();
         return queryResult.stream().collect(
                 Collectors.toMap(o -> String.valueOf(o[1]), o -> BigDecimal.valueOf(Double.parseDouble((String.valueOf(o[0]))))));
+    }
+
+    // Reservation related queries
+
+    public Reservation getReservationById(Long reservationId) {
+        return entityManager.createNamedQuery(Reservation.GET_RESERVATION_BY_ID, Reservation.class)
+                .setParameter("reservationId", reservationId)
+                .getSingleResult();
+    }
+    
+    public Collection<Reservation> getReservationForCar(Long carId) {
+        return entityManager.createNamedQuery(Reservation.GET_RESERVATIONS_FOR_USER, Reservation.class)
+                .setParameter("carId", carId)
+                .getResultList();
+    }
+
+    public Collection<Reservation> getReservationForUser(Car car) {
+        return entityManager.createNamedQuery(Reservation.GET_RESERVATIONS_FOR_USER, Reservation.class)
+                .setParameter("username", applicationState.getUsername())
+                .getResultList();
     }
 }
