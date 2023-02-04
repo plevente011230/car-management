@@ -62,6 +62,12 @@ public class QueryService {
 
     //User related queries
 
+    public ApplicationUser getUserById(Long userId) {
+        return entityManager.createNamedQuery(ApplicationUser.GET_USER_BY_ID, ApplicationUser.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
     public Collection<String> filterUserByUsername(String username) {
         return entityManager.createNamedQuery(ApplicationUser.FILTER_USER_BY_USERNAME, String.class)
                 .setParameter("username", username)

@@ -48,6 +48,9 @@ public class Car extends AbstractEntity {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Expense> expenses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Reservation> reservations = new ArrayList<>();
+
     public String getBrand() {
         return brand;
     }
@@ -102,15 +105,24 @@ public class Car extends AbstractEntity {
         this.expenses = expenses;
     }
 
+    public Collection<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     public Car() {
     }
 
-    public Car(Long id, LocalDateTime created, LocalDateTime lastUpdated, String brand, String model, String plateNumber, ApplicationUser owner, Collection<Expense> expenses) {
+    public Car(Long id, LocalDateTime created, LocalDateTime lastUpdated, String brand, String model, String plateNumber, ApplicationUser owner, Collection<Expense> expenses, Collection<Reservation> reservations) {
         super(id, created, lastUpdated);
         this.brand = brand;
         this.model = model;
         this.plateNumber = plateNumber;
         this.owner = owner;
         this.expenses = expenses;
+        this.reservations = reservations;
     }
 }

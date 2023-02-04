@@ -3,10 +3,13 @@ package com.levi.carmanagement.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
+@NamedQuery(name = ApplicationUser.GET_USER_BY_ID,
+        query = "select u from ApplicationUser u where u.id = :id")
 @NamedQuery(name = ApplicationUser.FIND_USER_BY_USERNAME,
         query = "select u from ApplicationUser u where u.username = :filter")
 @NamedQuery(name = ApplicationUser.FILTER_USER_BY_USERNAME,
@@ -15,6 +18,7 @@ public class ApplicationUser extends AbstractEntity {
 
     public static final String FIND_USER_BY_USERNAME = "User.findUserByUsername";
     public static final String FILTER_USER_BY_USERNAME = "User.filterByUsername";
+    public static final String GET_USER_BY_ID = "User.findById";
 
     @Column(unique = true)
     @Size(min = 3, max = 25, message = "Username must be between 3 and 25 characters long!")
@@ -31,6 +35,9 @@ public class ApplicationUser extends AbstractEntity {
 
     @OneToMany(mappedBy = "owner")
     private Collection<Car> ownedCars = new HashSet<>();
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Reservation> reservations = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -98,15 +105,25 @@ public class ApplicationUser extends AbstractEntity {
         this.drivenCars.add(car);
     }
 
+    public Collection<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     public ApplicationUser() {
     }
 
-    public ApplicationUser(Long id, LocalDateTime created, LocalDateTime lastUpdated, String username, String password, String salt, DrivingLicence drivingLicence, Collection<Car> ownedCars) {
+    public ApplicationUser(Long id, LocalDateTime created, LocalDateTime lastUpdated, String username, String password, String salt, DrivingLicence drivingLicence, Collection<Car> ownedCars, Collection<Reservation> reservations, Collection<Car> drivenCars) {
         super(id, created, lastUpdated);
         this.username = username;
         this.password = password;
         this.salt = salt;
         this.drivingLicence = drivingLicence;
         this.ownedCars = ownedCars;
+        this.reservations = reservations;
+        this.drivenCars = drivenCars;
     }
 }

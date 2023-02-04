@@ -64,6 +64,7 @@ public class UserResource {
     @GET
     @Path("logout")
     public Response logout() {
+        applicationState.setUserId(null);
         applicationState.setUsername(null);
         return Response.ok("Logged out successfully").build();
     }
@@ -75,6 +76,8 @@ public class UserResource {
         if(!securityService.authenticateUser(username, password)) {
             throw new SecurityException("Email or password incorrect");
         }
+        ApplicationUser user = queryService.getUserByUsername(username);
+        applicationState.setUserId(user.getId());
         applicationState.setUsername(username);
 //        logger.log(Level.INFO, "User logged in: {}", username);
         String token = getToken(username);

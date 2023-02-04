@@ -11,6 +11,6 @@ public class NoResultExceptionMapper implements ExceptionMapper<NoResultExceptio
     @Override
     public Response toResponse(NoResultException exception) {
         String message = "No search result!";
-        return Response.status(Response.Status.NOT_FOUND).entity(message).build();
+        return Response.ok(message).status(Response.Status.NO_CONTENT).entity(message).build();
     }
 }
