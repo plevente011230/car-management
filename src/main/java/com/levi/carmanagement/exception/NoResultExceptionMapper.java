@@ -1,4 +1,4 @@
-package com.levi.carmanagement.config;
+package com.levi.carmanagement.exception;
 
 import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;

@@ -109,8 +109,9 @@ public class ApplicationUser extends AbstractEntity {
         return reservations;
     }
 
-    public void setReservations(Collection<Reservation> reservations) {
-        this.reservations = reservations;
+    public void addReservation(Reservation reservation) {
+        reservation.setUser(this);
+        this.reservations.add(reservation);
     }
 
     public ApplicationUser() {

@@ -1,4 +1,4 @@
-package com.levi.carmanagement.config;
+package com.levi.carmanagement.exception;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;

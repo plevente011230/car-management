@@ -1,9 +1,7 @@
 package com.levi.carmanagement.service;
 
-import com.levi.carmanagement.entity.ApplicationUser;
-import com.levi.carmanagement.entity.Car;
-import com.levi.carmanagement.entity.DrivingLicence;
-import com.levi.carmanagement.entity.Expense;
+import com.levi.carmanagement.entity.*;
+import com.levi.carmanagement.exception.NoAccessException;
 
 import javax.annotation.sql.DataSourceDefinition;
 import javax.ejb.Stateless;
@@ -81,6 +79,19 @@ public class PersistenceService {
         car.addExpense(expense);
         entityManager.persist(expense);
         entityManager.merge(car);
+    }
+
+    // Reservation
+
+    public void addReservation(Long carId, Reservation reservation) throws NoAccessException {
+        Car car = queryService.findCarById(carId);
+        ApplicationUser user = queryService.getUserByUsername(applicationState.getUsername());
+        if(car.getOwner().getUsername().equals(user.getUsername()) || car.getDrivers().contains(user)) {
+            car.addReservation(reservation);
+            user.addReservation(reservation);
+            entityManager.persist(reservation);
+        }
+        throw new NoAccessException("No access granted to this resource");
     }
 
 }
