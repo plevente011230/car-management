@@ -130,14 +130,14 @@ public class QueryService {
                 .setParameter("reservationId", reservationId)
                 .getSingleResult();
     }
-    
+
     public Collection<Reservation> getReservationForCar(Long carId) {
         return entityManager.createNamedQuery(Reservation.GET_RESERVATIONS_FOR_USER, Reservation.class)
                 .setParameter("carId", carId)
                 .getResultList();
     }
 
-    public Collection<Reservation> getReservationForUser(Car car) {
+    public Collection<Reservation> getReservationForUser() {
         return entityManager.createNamedQuery(Reservation.GET_RESERVATIONS_FOR_USER, Reservation.class)
                 .setParameter("username", applicationState.getUsername())
                 .getResultList();
