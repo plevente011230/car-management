@@ -1,5 +1,6 @@
 package com.levi.carmanagement.entity;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,8 +21,10 @@ public class Reservation extends AbstractEntity {
     public static final String GET_RESERVATIONS_FOR_USER = "Reservation.getReservationsForUser";
     public static final String GET_RESERVATION_BY_ID = "Reservation.getReservationById";
 
+    @JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime from;
 
+    @JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime to;
 
     @ManyToOne
