@@ -17,6 +17,7 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.security.Key;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 
 @Path("user")
@@ -56,9 +57,15 @@ public class UserResource {
 
     @GET
     @Secure
-    public Response getUserById() {
+    public Response getLoggedInUserDetails() {
         ApplicationUser user = queryService.getUserDetails();
         return Response.ok(user).status(Response.Status.FOUND).build();
+    }
+
+    @GET
+    public Response filterUsersByUsername(@QueryParam("filter") String filter) {
+        Collection<String> usernames = queryService.filterUserByUsername(filter);
+        return Response.ok(usernames).status(Response.Status.OK).build();
     }
 
     @GET
