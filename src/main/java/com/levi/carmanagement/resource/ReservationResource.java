@@ -30,7 +30,7 @@ public class ReservationResource {
     @POST
     @Secure
     public Response addReservation(@QueryParam("carId") Long carId, @RequestBody Reservation reservation) throws NoAccessException {
-        persistenceService.addReservation(carId, reservation);
+        persistenceService.saveReservation(carId, reservation);
         URI uri = uriInfo.getBaseUriBuilder().path("user/reservations").path(reservation.getId().toString()).build();
         return Response.ok().header("Location", uri).status(Response.Status.CREATED).build();
     }

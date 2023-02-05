@@ -114,6 +114,10 @@ public class Car extends AbstractEntity {
         this.reservations.add(reservation);
     }
 
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+    }
+
     public Car() {
     }
 

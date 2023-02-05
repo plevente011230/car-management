@@ -83,15 +83,31 @@ public class PersistenceService {
 
     // Reservation
 
-    public void addReservation(Long carId, Reservation reservation) throws NoAccessException {
+    public void saveReservation(Long carId, Reservation reservation) throws NoAccessException {
         Car car = queryService.findCarById(carId);
         ApplicationUser user = queryService.getUserByUsername(applicationState.getUsername());
         if(car.getOwner().getUsername().equals(user.getUsername()) || car.getDrivers().contains(user)) {
-            car.addReservation(reservation);
-            user.addReservation(reservation);
-            entityManager.persist(reservation);
+            if(reservation.getId() != null) {
+                car.addReservation(reservation);
+                user.addReservation(reservation);
+                entityManager.persist(reservation);
+            } else {
+                entityManager.merge(reservation);
+            }
         }
         throw new NoAccessException("No access granted to this resource");
+    }
+
+    public void deleteReservation(Long reservationId) throws NoAccessException {
+        Reservation reservation = queryService.getReservationById(reservationId);
+        ApplicationUser loggedInUser = queryService.getUserByUsername(applicationState.getUsername());
+        if(reservation.getUser() ==  loggedInUser || reservation.getCar().getOwner().equals(loggedInUser)) {
+            reservation.getCar().removeReservation(reservation);
+            loggedInUser.removeReservation(reservation);
+            entityManager.remove(reservation);
+        } else {
+            throw new NoAccessException("No access granted to this resource");
+        }
     }
 
 }
