@@ -12,6 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -40,7 +42,7 @@ public class UserResource {
 
     @POST
     @Path("register")
-    public Response saveUser(@RequestBody ApplicationUser user) {
+    public Response saveUser(@NotNull @RequestBody ApplicationUser user) {
         persistenceService.saveUser(user);
         URI uri = uriInfo.getAbsolutePathBuilder().path(user.getId().toString()).build();
         return Response.created(uri).status(Response.Status.CREATED).build();
@@ -63,7 +65,8 @@ public class UserResource {
     }
 
     @GET
-    public Response filterUsersByUsername(@QueryParam("filter") String filter) {
+    public Response filterUsersByUsername(
+            @QueryParam("filter") @Size(min = 3, message = "Filter parameter must be at least 3 characters long.") String filter) {
         Collection<String> usernames = queryService.filterUserByUsername(filter);
         return Response.ok(usernames).status(Response.Status.OK).build();
     }
