@@ -56,4 +56,11 @@ public class ReservationResource {
         Collection<Reservation> reservations = queryService.getReservationForUser();
         return Response.ok(reservations).status(Response.Status.OK).build();
     }
+
+    @DELETE
+    @Secure
+    public Response deleteReservation(@QueryParam("reservationId") Long reservationId) throws NoAccessException {
+        persistenceService.deleteReservation(reservationId);
+        return Response.ok().status(Response.Status.OK).build();
+    }
 }
