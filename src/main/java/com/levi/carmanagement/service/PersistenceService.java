@@ -9,12 +9,19 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Map;
 
+//@DataSourceDefinition(
+//        name = "java:app/CarManagement/MyDS",
+//        className = "org.postgresql.ds.PGConnectionPoolDataSource",
+//        url = "jdbc:postgresql://localhost:5432/CarsApp",
+//        user = "postgres",
+//        password = "postgres"
+//)
 @DataSourceDefinition(
         name = "java:app/CarManagement/MyDS",
         className = "org.postgresql.ds.PGConnectionPoolDataSource",
-        url = "jdbc:postgresql://localhost:5432/CarsApp",
-        user = "postgres",
-        password = "postgres"
+        url = "jdbc:postgresql://hattie.db.elephantsql.com/zimvrpxx",
+        user = "zimvrpxx",
+        password = "LjlebL_h1GV7-bbmkeK1zMvBMnSXG1nS"
 )
 @Stateless
 public class PersistenceService {
@@ -95,7 +102,7 @@ public class PersistenceService {
                 entityManager.merge(reservation);
             }
         }
-        throw new NoAccessException("No access granted to this resource");
+        throw new NoAccessException();
     }
 
     public void deleteReservation(Long reservationId) throws NoAccessException {
@@ -106,7 +113,7 @@ public class PersistenceService {
             loggedInUser.removeReservation(reservation);
             entityManager.remove(reservation);
         } else {
-            throw new NoAccessException("No access granted to this resource");
+            throw new NoAccessException();
         }
     }
 

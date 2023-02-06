@@ -1,6 +1,7 @@
 package com.levi.carmanagement.service;
 
 import com.levi.carmanagement.entity.*;
+import com.levi.carmanagement.exception.NoAccessException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -125,10 +126,16 @@ public class QueryService {
 
     // Reservation related queries
 
-    public Reservation getReservationById(Long reservationId) {
-        return entityManager.createNamedQuery(Reservation.GET_RESERVATION_BY_ID, Reservation.class)
+    public Reservation getReservationById(Long reservationId) throws NoAccessException {
+        ApplicationUser loggedInUser = getUserByUsername(applicationState.getUsername());
+        Reservation reservation = entityManager.createNamedQuery(Reservation.GET_RESERVATION_BY_ID, Reservation.class)
                 .setParameter("reservationId", reservationId)
                 .getSingleResult();
+        if(reservation.getUser().equals(loggedInUser) || reservation.getCar().getOwner().equals(loggedInUser)) {
+            return reservation;
+        } else {
+            throw new NoAccessException();
+        }
     }
 
     public Collection<Reservation> getReservationForCar(Long carId) {

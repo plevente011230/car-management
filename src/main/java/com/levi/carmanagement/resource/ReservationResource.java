@@ -38,7 +38,7 @@ public class ReservationResource {
     @GET
     @Secure
     @Path("{reservationId}")
-    public Response getReservationById(@PathParam("reservationId") Long reservationId) {
+    public Response getReservationById(@PathParam("reservationId") Long reservationId) throws NoAccessException {
         Reservation reservation = queryService.getReservationById(reservationId);
         return Response.ok(reservation).status(Response.Status.OK).build();
     }
